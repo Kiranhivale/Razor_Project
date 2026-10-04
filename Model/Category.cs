@@ -10,5 +10,6 @@ namespace Razor.Model
         [Required]
         public string Name { get; set; } = string.Empty;
         //public string  Standerd {get; set;} = string.Empty;
+        
     }
 }
