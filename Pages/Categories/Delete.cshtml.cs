@@ -4,25 +4,27 @@ using Razor.Data;
 using Razor.Model;
 namespace Razor.Pages.Categories
 {
-    public class CreateModel : PageModel
+    public class DeleteModel : PageModel
     {
         [BindProperty]
         public Category Category { get; set; }
 
         private ApplicationDbContext _context;
-        public CreateModel(ApplicationDbContext context)
+        public DeleteModel(ApplicationDbContext context)
         {
             _context = context;
         }
-        public void OnGet()
+        public void OnGet(int id)
         {
+            Category = _context.Categories.Find(id);
         }
 
         public async Task<IActionResult>OnPost()
         {
-            if (ModelState.IsValid)
+             var category = _context.Categories.FirstOrDefault(x => x.Id == Category.Id);
+            if (category != null)
             {
-                await _context.Categories.AddAsync(Category);
+                _context.Categories.Remove(category);
                 await _context.SaveChangesAsync();
 
                 return RedirectToPage("Category");

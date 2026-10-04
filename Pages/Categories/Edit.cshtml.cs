@@ -4,25 +4,26 @@ using Razor.Data;
 using Razor.Model;
 namespace Razor.Pages.Categories
 {
-    public class CreateModel : PageModel
+    public class EditModel : PageModel
     {
         [BindProperty]
         public Category Category { get; set; }
 
         private ApplicationDbContext _context;
-        public CreateModel(ApplicationDbContext context)
+        public EditModel(ApplicationDbContext context)
         {
             _context = context;
         }
-        public void OnGet()
+        public void OnGet(int id)
         {
+            Category = _context.Categories.Find(id);
         }
 
         public async Task<IActionResult>OnPost()
         {
             if (ModelState.IsValid)
             {
-                await _context.Categories.AddAsync(Category);
+                 _context.Categories.Update(Category);
                 await _context.SaveChangesAsync();
 
                 return RedirectToPage("Category");
